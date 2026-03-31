@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import CurrentUserContext from "../../../../contexts/CurrentUserContext";
 export default function EditAvatar({ onClose }) {
   const userContext = useContext(CurrentUserContext);
@@ -6,7 +6,9 @@ export default function EditAvatar({ onClose }) {
 
   const [avatar, setAvatar] = useState(currentUser.avatar);
 
-  console.log(currentUser.avatar);
+  useEffect(() => {
+    setAvatar("");
+  }, []);
 
   const handleAvatarChange = (event) => {
     setAvatar(event.target.value);

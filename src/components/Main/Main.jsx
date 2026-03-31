@@ -14,10 +14,8 @@ import api from "../../utils/api";
 
 import CurrentUserContext from "../../../src/contexts/CurrentUserContext";
 
-export default function Main() {
+export default function Main({ cards, setCards }) {
   const { currentUser } = useContext(CurrentUserContext);
-
-  const [cards, setCards] = useState([]);
 
   async function handleCardLike(card) {
     const isLiked = card.isLiked;
@@ -43,15 +41,6 @@ export default function Main() {
       })
       .catch((error) => console.error(error));
   }
-
-  useEffect(() => {
-    api
-      .getCardList()
-      .then((data) => {
-        setCards(data);
-      })
-      .catch((error) => console.error(error));
-  }, []);
 
   const [popup, setPopup] = useState(null);
 

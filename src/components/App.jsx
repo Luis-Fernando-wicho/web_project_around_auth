@@ -9,6 +9,7 @@ import api from "../utils/api.js";
 
 function App() {
   const [currentUser, setCurrentUser] = useState({});
+  const [cards, setCards] = useState([]);
 
   useEffect(() => {
     api
@@ -35,14 +36,37 @@ function App() {
     })();
   };
 
+  const handleAddPlaceSubmit = (newCardData) => {
+    (async () => {
+      await api.addCard(newCardData).then((newCard) => {
+        setCards([newCard, ...cards]);
+      });
+    })();
+  };
+
+  useEffect(() => {
+    api
+      .getCardList()
+      .then((data) => setCards(data))
+      .catch((err) => console.error(err));
+  }, []);
+
   return (
     <>
       <CurrentUserContext.Provider
-        value={{ currentUser, handleUpdateUser, handleUpdateAvatar }}
+        value={{
+          currentUser,
+          handleUpdateUser,
+          handleUpdateAvatar,
+          handleAddPlaceSubmit,
+        }}
       >
         <div className="page">
           <Header />
-          <Main />
+          <Main
+            cards={cards}
+            setCards={setCards} // Opcional, si Main aún maneja likes/delete internamente
+          />
           <Footer />
         </div>
       </CurrentUserContext.Provider>
